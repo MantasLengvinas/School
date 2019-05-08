@@ -130,6 +130,7 @@ void Isvalyti(Partija P[], int i){
 
 void Isvedimas(int n, Partija P[], vector<int> Atr){
     ofstream fr(FR);
+
     fr<<"Pradiniai surikiuoti duomenys:"<<endl<<endl;
 
     for(int i = 0; i < n; i++){
@@ -143,7 +144,7 @@ void Isvedimas(int n, Partija P[], vector<int> Atr){
     for(int i = 0; i < n; i++){
         for(int j = 0; j < P[i].kiek; j++){
             if(P[i].nariai[j][1] == 1){
-                //cout<<P[i].nariai[j][0]<<endl;
+                cout<<P[i].nariai[j][0]<<endl;
             }
         }
     }
