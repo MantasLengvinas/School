@@ -1,141 +1,92 @@
-#include <iostream>
-#include <fstream>
-#include <iomanip>
-#include <vector>
+#include<fstream>
+#include<iostream>
 
 using namespace std;
 
-const char FD[] = "data.txt";
-const char FR[] = "res.txt";
-
-class Drawing{
-    int w, h;
-
-private:
-
-    struct cell{
-        int x;
-        int y;
-        int r;
-        int g;
-        int b;
-    };
-
-    struct rect{
-        int x;
-        int y;
-        int w;
-        int h;
-        int r;
-        int g;
-        int b;
-    };
-
-    vector<cell> Cells;
-    vector<rect> Rects;
-
-public:
-
-    void getRectData(); //Duomenu nuskaitymas i strukturini vektoriu
-    void getSize(); //Piesinio dydzio nustatymas pagal ploti, auksti ir koordinates
-    void Blank(); //Sukuriamas tuscias piesinys(nustatomos langeliu koordinates ir nustatoma balta spalva)
-    void changeColor(int, int); //Spalvos pakeitimo funkcija
-    void Draw(); //Staciakampiu piesimas naudojant changeColor funkcija
-    void Display(); //Duomenu isvedimas
+//--------------------------------------- STRUCTURES
+struct Color {
+    int red, green, blue;
 };
 
-void Drawing::getRectData(){
-    ifstream fd(FD);
-    int n, x, y, w, h, r, g, b;
+struct Rectangle {
+    int x, y, dx, dy;
+    Color color;
+};
 
-    fd>>n;
+//--------------------------------------- FUNCTION DECLARATION
+void draw(Rectangle rect, Color drawing[]); // add rectangle layer on top of a colorful drawing
 
-    for(int i = 0; i < n; i++){
-        fd>>x>>y>>w>>h>>r>>g>>b;
-        Rects.push_back({x, y, w, h, r, g, b});
-    }
+//--------------------------------------- MAIN
+static const int DRAWING_SIZE = 100;
 
-    fd.close();
-}
+int main() {
 
-void Drawing::getSize(){
-    int gw = Rects[0].w, gh = Rects[0].h;
+    //--------------------------------------- READ INPUT DATA
+    int n; // number of rectangles
+    int i; // used for loops' index
+    int rightColumn = 0, bottomRow = 0; // to remove empty space on the right and bottom
+    ifstream inputFile("data.txt"); // open task's input file
+    inputFile >> n; // read number of rectangles from input file
+    Rectangle rectangles[n]; // allocate memory for n rectangles' information
 
-    for(int i = 0; i < Rects.size(); i++){
-        if(Rects[i].w + Rects[i].x > gw){
-            gw = Rects[i].w + Rects[i].x;
+    for (i = 0; i < n; i++) {
+        inputFile >> rectangles[i].x >> rectangles[i].y >> rectangles[i].dx >> rectangles[i].dy;
+        inputFile >> rectangles[i].color.red >> rectangles[i].color.green >> rectangles[i].color.blue;
+
+
+        //--------------------------------------- ADJUST BOTTOM RIGHT CORNER IF NEEDED
+        int xx = rectangles[i].x + rectangles[i].dx;
+        int yy = rectangles[i].y + rectangles[i].dy;
+
+        if (rightColumn < xx) {
+            rightColumn = xx;
         }
-        if(Rects[i].h + Rects[i].y > gh){
-            gh = Rects[i].h + Rects[i].y;
-        }
-    }
+        // Alternatives:
+        //        rightColumn = (rightColumn < xx) ? xx : rightColumn; // Elvis expression
+        //        rightColumn = max(rightColumn, xx);
 
-    w = gw;
-    h = gh;
-}
-
-void Drawing::Blank(){
-    cell c;
-
-    for(int y = 0; y < h; y++){
-        for(int x = 0; x < w; x++){
-            c.x = x;
-            c.y = y;
-            c.r = 255;
-            c.g = 255;
-            c.b = 255;
-
-            Cells.push_back(c);
+        if (bottomRow < yy) {
+            bottomRow = yy;
         }
     }
-}
+    inputFile.close();
 
-void Drawing::changeColor(int i, int j){
-    Cells[j].r = Rects[i].r;
-    Cells[j].g = Rects[i].g;
-    Cells[j].b = Rects[i].b;
-}
+    //--------------------------------------- INITIALIZE DRAWING
+    Color drawing[DRAWING_SIZE * DRAWING_SIZE]; // allocate memory for colorful picture. Array size = ROWS * COLUMNS
+    for (i = 0; i < DRAWING_SIZE * DRAWING_SIZE; i++) { // make all drawing cells white
+        drawing[i].red = 255;
+        drawing[i].green = 255;
+        drawing[i].blue = 255;
+    }
 
-void Drawing::Draw(){
-    for(int i = 0; i < Rects.size(); i++){
-        for(int j = 0; j < Cells.size(); j++){
-            if(Rects[i].x == Cells[j].x && Rects[i].y == Cells[j].y){
-                changeColor(i, j);
-                if(Rects[i].w > 1){
-                    Rects[i].x++;
-                    Rects[i].w--;
-                }
-                if(Rects[i].h > 1){
-                    Rects[i].y++;
-                    Rects[i].h--;
-                }
-            }
+    //--------------------------------------- DRAW RECTANGLES
+    for (i = 0; i < n; i++) {
+        draw(rectangles[i], drawing);
+    }
+
+    //--------------------------------------- WRITE RESULT
+    ofstream resultFile("res.txt");
+    resultFile << bottomRow << " " << rightColumn << endl;
+    int column, row;
+    for (row = 0; row < bottomRow; row++) {
+        for (column = 0; column < rightColumn; column++) {
+            i = DRAWING_SIZE * row + column;
+            resultFile << drawing[i].red << " " << drawing[i].green << " " << drawing[i].blue << endl;
+            cout << drawing[i].red << " " << drawing[i].green << " " << drawing[i].blue << endl;
         }
     }
+    resultFile.close();
+    return 0;
 }
 
-void Drawing::Display(){
+//--------------------------------------- FUNCTION IMPLEMENTATION
+void draw(Rectangle rect, Color drawing[]) {
+    int column, row, i;
 
-    ofstream fr(FR);
-
-    fr<<h<<" "<<w<<endl<<endl;
-
-    for(int i = 0; i < Cells.size(); i++){
-        fr<<Cells[i].r<<" "<<Cells[i].g<<" "<<Cells[i].b<<endl;
+    for (row = rect.y; row < rect.y + rect.dy; row++) { // Using < instead of <= so neighbour cells wouldn't be modified
+        for (column = rect.x; column < rect.x + rect.dx; column++) {
+            i = DRAWING_SIZE * row + column;
+            drawing[i] = rect.color;
+        }
     }
-
-    fr.close();
-}
-
-int main(){
-
-    Drawing D;
-
-    D.getRectData();
-    D.getSize();
-    D.Blank();
-    D.Draw();
-    D.Display();
-
-	return 0;
 }
