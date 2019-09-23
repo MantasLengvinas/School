@@ -1,0 +1,11 @@
+5 5
+Pienas 0.78
+Kakava 1.55
+Sviestas 0.75
+Duona 1.56
+Makaronai 1.75
+4 0 3 1 2
+1 3
+6 1 1 0 2 3 4
+5 4 3 2 2 0
+1 1

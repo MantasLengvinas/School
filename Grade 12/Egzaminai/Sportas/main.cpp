@@ -138,25 +138,27 @@ void Rikiavimas(vector<finisaves> &F){
 }
 
 void Isvedimas(vector<finisaves> &F){
-    cout<<"Merginos"<<endl;
+	ofstream fr(FR);
+	
+    fr<<"Merginos"<<endl;
     for(auto f : F){
         if(!f.vaik){
-            cout<<f.nr;
+            fr<<f.nr;
             for(auto s : f.v){
-                cout<<s;
+                fr<<s;
             }
-            cout<<" "<<f.h<<" "<<f.m<<" "<<f.s<<endl;
+            fr<<" "<<f.h<<" "<<f.m<<" "<<f.s<<endl;
         }
     }
 
-    cout<<"Vaikinai"<<endl;
+    fr<<"Vaikinai"<<endl;
     for(auto f : F){
         if(f.vaik){
-            cout<<f.nr;
+            fr<<f.nr;
             for(auto s : f.v){
-                cout<<s;
+                fr<<s;
             }
-            cout<<" "<<f.h<<" "<<f.m<<" "<<f.s<<endl;
+            fr<<" "<<f.h<<" "<<f.m<<" "<<f.s<<endl;
         }
     }
 }
