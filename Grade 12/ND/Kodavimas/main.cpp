@@ -9,42 +9,52 @@ using namespace std;
 const char FD[] = "data.txt";
 const char FR[] = "res.txt";
 
-struct kodas{
-    char nr;
-    string kodas;
+struct skaicius{
+    int nr;
+    string skaicius;
 };
 
-void Duomenys(vector<char> &K, vector<kodas> &Ko);
-void Kodavimas(vector<char> &K, vector<int> &N, vector<kodas> &Ko);
+struct kodas{
+    string kodas;
+    int klaidos;
+};
+
+void Duomenys(vector<skaicius> &Ko, vector<kodas> &K);
+void Kodavimas(vector<kodas> &K, vector<int> &N, vector<skaicius> &Ko);
+void Isvedimas(vector<kodas> K, vector<int> N);
+
+string Klaida(string dal, int i, int kpr, int kpb);
+
+int Atkodavimas(string dal, vector<skaicius> Ko, vector<kodas> &K, int i, int kpr, int kpb);
 
 int main(){
 
-    vector<char> K;
+    vector<kodas> K;
     vector<int> N;
-    vector<kodas> Ko;
+    vector<skaicius> Ko;
 
-	Duomenys(K, Ko);
+	Duomenys(Ko, K);
 	Kodavimas(K, N, Ko);
-
-	for(auto k : Ko){
-        cout<<k.nr<<" "<<k.kodas<<endl;
-	}
+	Isvedimas(K, N);
 
 	return 0;
 }
 
-void Duomenys(vector<char> &K, vector<kodas> &Ko){
+void Duomenys(vector<skaicius> &Ko, vector<kodas> &K){
 
     ifstream fd(FD);
     int n;
     fd>>n;
     char a;
+    string kodas;
 
     for(int i = 0; i < n; i++){
         for(int j = 0; j < 21; j++){
             fd>>a;
-            K.push_back(a);
+            kodas += a;
         }
+        K.push_back({kodas, 0});
+        kodas.clear();
     }
 
     fd.close();
@@ -63,14 +73,49 @@ void Duomenys(vector<char> &K, vector<kodas> &Ko){
 
 }
 
-void Kodavimas(vector<char> &K, vector<int> &N, vector<kodas> &Ko){
-    string kodas;
-    string nr;
-    for(int i = 0; i < K.size(); i += 3){
-        for(int j = i; j < i+3; j++){
-            kodas += K[j];
-        }
+void Kodavimas(vector<kodas> &K, vector<int> &N, vector<skaicius> &Ko){
+    string dal;
+    int kpr, kpb;
 
-        kodas.clear();
+    for(int k = 0; k < K.size(); k++){
+        for(int i = 0; i < K[k].kodas.length(); i += 3){
+            for(int j = i; j < i + 3; j++){
+                dal += K[k].kodas[j];
+            }
+            kpr = i;
+            kpb = i + 3;
+            N.push_back(Atkodavimas(dal, Ko, K, k, kpr, kpb));
+            dal.clear();
+        }
+    }
+}
+
+void Isvedimas(vector<kodas> K, vector<int> N){
+    int pr = 0, pb = 7;
+    for(auto k : K){
+        //cout<<k.kodas<<" Klaidos: "<<k.klaidos<<" Tel. nr: ";
+        for(int i = pr; i < pb; i++){
+            //cout<<N[i];
+        }
+        pr += 7;
+        pb += 7;
+        //cout<<endl;
+    }
+}
+
+string Klaida(vector<kodas> &K, string dal, int i, int kpr, int kpb){
+
+    int a = dal[0], b = dal[1], c = dal[2];
+    int s1, s2;
+
+    return dal;
+}
+
+int Atkodavimas(string dal, vector<skaicius> Ko, vector<kodas> &K, int i, int kpr, int kpb){
+    dal = Klaida(K, dal, i, kpr, kpb);
+    for(auto k : Ko){
+        if(dal == k.skaicius){
+            return k.nr;
+        }
     }
 }
