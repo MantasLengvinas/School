@@ -108,7 +108,13 @@ string Klaida(vector<kodas> &K, string dal, int i, int kpr, int kpb){
     int a = dal[0], b = dal[1], c = dal[2];
     int s1, s2;
 
-    return dal;
+    s1 = b - a;
+    s2 = c - b;
+
+    if(s1 == 1 && s2 == 1){
+        return dal;
+    }
+
 }
 
 int Atkodavimas(string dal, vector<skaicius> Ko, vector<kodas> &K, int i, int kpr, int kpb){
