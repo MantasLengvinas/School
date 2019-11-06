@@ -84,6 +84,7 @@ void Kodavimas(vector<kodas> &K, vector<int> &N, vector<skaicius> &Ko){
             }
             kpr = i;
             kpb = i + 3;
+            string kodas;
             N.push_back(Atkodavimas(dal, Ko, K, k, kpr, kpb));
             dal.clear();
         }
@@ -111,14 +112,17 @@ string Klaida(vector<kodas> &K, string dal, int i, int kpr, int kpb){
     s1 = b - a;
     s2 = c - b;
 
-    if(s1 == 1 && s2 == 1){
+    cout<<s1<<endl;
+
+    /*if(s1 == 1 && s2 == 1){
         return dal;
-    }
+    }*/
 
 }
 
 int Atkodavimas(string dal, vector<skaicius> Ko, vector<kodas> &K, int i, int kpr, int kpb){
-    dal = Klaida(K, dal, i, kpr, kpb);
+    Klaida(K, dal, i, kpr, kpb);
+    //dal = Klaida(K, dal, i, kpr, kpb);
     for(auto k : Ko){
         if(dal == k.skaicius){
             return k.nr;
