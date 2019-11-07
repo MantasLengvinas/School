@@ -46,7 +46,7 @@ string Kodavimas(string kodas){
             else{
                 dal.replace(dal.begin(), dal.end(), 4, '1');
             }
-            cout<<dal;
+
             nk += dal;
 
             dal.clear();
@@ -75,32 +75,22 @@ bool Patikrinti(string kodas){
         if(kiekn == 4 || kiekv == 4){
             kiek++;
         }
-
     }
 
     if(kodas.length() / 4 == kiek){
         return true;
     }
-
     return false;
 }
 
 void Duomenys(string &kodas){
     ifstream fd(FD);
-
     fd>>kodas;
-
     fd.close();
 }
 
 void Isvedimas(string kodas){
-
     ofstream fr(FR);
-
     fr<<Kodavimas(kodas);
-
     fr.close();
-
 }
-
-
