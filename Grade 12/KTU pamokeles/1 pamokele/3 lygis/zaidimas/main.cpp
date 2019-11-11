@@ -6,8 +6,8 @@
 
 using namespace std;
 
-const char FD[] = "data.txt";
-const char FR[] = "res.txt";
+const char FD[] = "matematika_data.txt";
+const char FR[] = "matematika_res.txt";
 
 struct dal{
     string vardas;

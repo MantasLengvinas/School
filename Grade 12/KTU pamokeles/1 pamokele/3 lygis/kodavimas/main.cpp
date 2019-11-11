@@ -5,8 +5,8 @@
 
 using namespace std;
 
-const char FD[] = "data.txt";
-const char FR[] = "res.txt";
+const char FD[] = "kodavimas_data.txt";
+const char FR[] = "kodavimas_res.txt";
 
 void Duomenys(string &kodas);
 void Isvedimas(string kodas);
