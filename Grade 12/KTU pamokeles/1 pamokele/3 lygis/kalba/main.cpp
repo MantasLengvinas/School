@@ -46,9 +46,9 @@ void Isvedimas(string slapta, string skiemuo){
 
 string Issifravimas(string skiemuo, string slapta){
 
-    int vieta;
+    size_t vieta;
 
-    while((vieta = slapta.find(skiemuo)) != -1){
+    while((vieta = slapta.find(skiemuo)) != string::npos){
 		slapta.erase(vieta, skiemuo.length());
 	}
 

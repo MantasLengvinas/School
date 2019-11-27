@@ -40,14 +40,8 @@ int main(){
 
 bool Tikrinti(string z1, string z2, int i1, int i2, vector<kryziazodis> &K){
     for(auto k : K){
-        for(auto s : k.S){
-            if(k.zodis1 == z1 && k.zodis2 == z2 && k.i1 == i1 && k.i2 == i2){
-                if(s.a == z1 && s.b == z2){
-                    if(s.b == z1 && s.a == z2){
-                        return true;
-                    }
-                }
-            }
+        if(k.zodis1 == z1 && k.zodis2 == z2 && k.i1 == i1 && k.i2 == i2){
+            return true;
         }
     }
 
