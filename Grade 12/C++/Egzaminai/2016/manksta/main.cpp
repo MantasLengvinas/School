@@ -41,7 +41,7 @@ bool _check(m a, m b){
 
 string _repair(string a){
 
-    while(a.size() < 20){
+    while(a.size() <= 20){
         a.insert(a.end(), ' ');
     }
 
