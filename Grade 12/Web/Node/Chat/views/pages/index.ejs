@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%- title%></title>
+    <link rel="stylesheet" href="/style/style.css">
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        var socket = io();
+
+        $(function () {
+            $('#join-form').submit(function(e){
+                e.preventDefault(); // prevents page reloading
+                socket.emit('join', $('#m').val());
+                $('#m').val('');
+                $('#join-form').attr('style', 'visibility: hidden');
+                $('#chat-content').removeAttr('style');
+                return false;
+            });
+
+            $('#msg-form').submit(function(e){
+                e.preventDefault(); // prevents page reloading
+                socket.emit('message', $('#m').val());
+                $('#m').val('');
+                return false;
+            });
+            socket.on('join', function(u){
+                $('#users').append($('<li>').text(u));
+            });
+            socket.on('message', function(msg){
+                $('#messages').append($('<li>').text(msg));
+            });
+        });
+    </script>
+  <body>
+
+    <form id="join-form" action="" style="">
+        <input type="text" placeholder="Username">
+        <button type="submit">Join</button>
+    </form>
+    <div id="chat-content" style="visibility: hidden">
+        <table>
+            <tbody><tr>
+                <th>Messages</th>
+                <th>Users</th>
+                </tr>
+                <tr>
+                    <td>
+                        <ul id="messages" class="messages-col">
+
+                        </ul>
+                    </td>
+                    <td>
+                        <ul id="users" class="users-col">
+                        
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        
+        <form action="" id="msg-form">
+        <input placeholder="Enter text" id="m" autocomplete="off" /><button>Send</button>
+        </form>
+    </div>
+  </body>
+</html>
