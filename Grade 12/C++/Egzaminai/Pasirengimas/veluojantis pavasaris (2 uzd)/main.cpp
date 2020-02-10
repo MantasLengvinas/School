@@ -13,9 +13,9 @@ const int Max = 20;
 
 void M(int VG[], int VL[], int VA[], int BG[], int BL[], int BA[], int R[]);
 void Oras(int &n, int &m, int VG[], int VL[], int VA[], int BG[], int BL[], int BA[]);
-void Isvedimas(int &m, int VG[], int VL[], int VA[], int BG[], int BL[], int BA[], int D[], int R[]);
 void DienosOrai(int n, int m, int VG[], int VL[], int VA[], int BG[], int BL[], int BA[], int D[]);
-void OruSuma(int n, int m, int VG[], int VL[], int VA[], int BG[], int BL[], int BA[], int R[]);
+void OruSuma(int n, int m, int VG[], int VL[], int VA[], int BG[], int BL[], int BA[], int R[], int D[]);
+void Isvedimas(int n, int VG[], int VL[], int VA[], int BG[], int BL[], int BA[], int D[], int R[]);
 
 int DienosOras(int i, int m, int VG[], int VL[], int VA[], int BG[], int BL[], int BA[]);
 
@@ -28,14 +28,8 @@ int main(){
     Oras(n, m, VG, VL, VA, BG, BL, BA);
     DienosOrai(n, m, VG, VL, VA, BG, BL, BA, D);
     DienosOrai(n, m, VG, VL, VA, BG, BL, BA, R);
-    OruSuma(n, m, VG, VL, VA, BG, BL, BA, R);
-
-    for(int i = 0; i < n; i++){
-        cout<<VG[i]<<" "<<VL[i]<<" "<<VA[i]<<" "<<BG[i]<<" "<<BL[i]<<" "<<BA[i]<<" "<<D[i]<<endl;
-    }
-    for(int i = 0; i < 7; i++){
-        cout<<R[i]<<" ";
-    }
+    OruSuma(n, m, VG, VL, VA, BG, BL, BA, R, D);
+    Isvedimas(n, VG, VL, VA, BG, BL, BA, D, R);
 
     return 0;
 }
@@ -118,7 +112,7 @@ void DienosOrai(int n, int m, int VG[], int VL[], int VA[], int BG[], int BL[], 
 
 }
 
-void OruSuma(int n, int m, int VG[], int VL[], int VA[], int BG[], int BL[], int BA[], int R[]){
+void OruSuma(int n, int m, int VG[], int VL[], int VA[], int BG[], int BL[], int BA[], int R[], int D[]){
 
     R[0] = Suma(n, VG);
     R[1] = Suma(n, VL);
@@ -127,14 +121,27 @@ void OruSuma(int n, int m, int VG[], int VL[], int VA[], int BG[], int BL[], int
     R[4] = Suma(n, BL);
     R[5] = Suma(n, BA);
 
-    R[6] = (R[0] + (R[1] * 2) + (R[2] * 3) + (R[3] * 4) + (R[4] * 5) + (R[5] * 6)) / m;
+    int so = 0;
+
+    for(int i = 0; i < n; i++){
+        so += D[i];
+    }
+
+    R[6] = so / n;
 
 }
 
-void Isvedimas(int m, int VG[], int VL[], int VA[], int BG[], int BL[], int BA[], int D[], int R[]){
+void Isvedimas(int n, int VG[], int VL[], int VA[], int BG[], int BL[], int BA[], int D[], int R[]){
 
     ofstream fr(FR);
 
+    for(int i = 0; i < n; i++){
+        fr<<VG[i]<<" "<<VL[i]<<" "<<VA[i]<<" "<<BG[i]<<" "<<BL[i]<<" "<<BA[i]<<" "<<D[i]<<endl;
+    }
+    for(int i = 0; i < 7; i++){
+        fr<<R[i]<<" ";
+    }
 
+    fr.close();
 
 }

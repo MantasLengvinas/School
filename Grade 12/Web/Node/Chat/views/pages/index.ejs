@@ -8,12 +8,12 @@
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
         var socket = io();
+        let users = [];
 
         $(function () {
             $('#join-form').submit(function(e){
                 e.preventDefault(); // prevents page reloading
-                socket.emit('join', $('#m').val());
-                $('#m').val('');
+                socket.emit('join', $('#us').val());
                 $('#join-form').attr('style', 'visibility: hidden');
                 $('#chat-content').removeAttr('style');
                 return false;
@@ -26,7 +26,14 @@
                 return false;
             });
             socket.on('join', function(u){
-                $('#users').append($('<li>').text(u));
+                users.push(u);
+                users.forEach(user => {
+                    if(user.nu){
+                        $('#users').append($('<li>').text(user.name));
+                    }
+                    user.nu = false;
+                });
+                
             });
             socket.on('message', function(msg){
                 $('#messages').append($('<li>').text(msg));
@@ -35,8 +42,8 @@
     </script>
   <body>
 
-    <form id="join-form" action="" style="">
-        <input type="text" placeholder="Username">
+    <form id="join-form" action="">
+        <input type="text" id="us" placeholder="Username">
         <button type="submit">Join</button>
     </form>
     <div id="chat-content" style="visibility: hidden">
@@ -48,7 +55,7 @@
                 <tr>
                     <td>
                         <ul id="messages" class="messages-col">
-
+                            
                         </ul>
                     </td>
                     <td>
