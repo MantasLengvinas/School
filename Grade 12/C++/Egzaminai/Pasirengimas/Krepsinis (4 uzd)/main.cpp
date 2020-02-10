@@ -1,4 +1,4 @@
-// 4 uzduotis 
+// 4 uzduotis
 
 #include <iostream>
 #include <fstream>
@@ -11,26 +11,34 @@ using namespace std;
 const char FD[] = "data.txt";
 const char FR[] = "res.txt";
 
+struct _player { //Zaidejo struktura
+
+	string name;
+	int age, points;
+
+};
+
 struct _team { //Komandos struktura
 	string name;
 	int n;
 	vector<_player> P;
 };
 
-struct _player { //Zaidejo struktura
-
-	string name;
-	int age, points;
-	bool isY, isA;
-
-};
-
 void getData(vector<_team> &T);
+void yPlayer(vector<_team> T, vector<string> &YP);
 
 int main(){
 
 	vector<_team> T, NT;
+	vector<string> YP;
 	ofstream fr(FR);
+
+	getData(T);
+	yPlayer(T, YP);
+
+	for(auto p : YP){
+		cout<<p<<endl;
+	}
 
 	return 0;
 }
@@ -47,17 +55,17 @@ void getData(vector<_team> &T){
 
 	for(int i = 0; i < n; i++){
 		fd >> pname >> age >> points;
-		P.push_back({pname, age, points, false, false});
+		P.push_back({pname, age, points});
 	}
 
-	T.push_back({tname, n, P}); 
+	T.push_back({tname, n, P});
 	P.clear();
 
 	fd >> tname >> n;
 
 	for(int i = 0; i < n; i++){
 		fd >> pname >> age >> points;
-		P.push_back({pname, age, points, false, false});
+		P.push_back({pname, age, points});
 	}
 
 	T.push_back({tname, n, P});  //Duomenys issaugojami struct masyve
@@ -67,20 +75,50 @@ void getData(vector<_team> &T){
 
 }
 
-void yPlayer(vector<_team> T, vector<string> &YP){ 
+void yPlayer(vector<_team> T, vector<string> &YP){
 
 	//Jauniausiu zaideju paieska
 
-	int ya = T[0].P[0].age; //Jauniausio zaidejo amziaus lyginimui reikalingas kintamasis
-	string yp; //Jauniausio zaidejo vardas
+	int ya = INT_MAX; //Jauniausiu zaideju amziaus lyginimui reikalingas kintamasis
+	string yp1, yp2; //Jauniausio zaidejo vardas
 
-	for(int j = 0; j < T[0].P.size(); j++){
-		if(T[0].P[j].age <= ya && !T[0].P[j].isY){
+	for(int j = 0; j < T[0].n; j++){
+		if(T[0].P[j].age <= ya){
 			ya = T[0].P[j].age;
-			yp = T[0].P[j].name;
-			T[0].P[j].isY = true;
+			yp1 = T[0].P[j].name;
+
 		}
 	}
+	YP.insert(YP.begin(), yp1);
+
+	for(int j = 0; j < T[0].n; j++){
+		if(T[0].P[j].age <= ya && T[0].P[j].name != yp1){
+			ya = T[0].P[j].age;
+			yp2 = T[0].P[j].name;
+
+		}
+	}
+	YP.insert(YP.begin(), yp2);
+
+	ya = INT_MAX;
+
+	for(int j = 0; j < T[1].n; j++){
+		if(T[1].P[j].age <= ya){
+			ya = T[1].P[j].age;
+			yp1 = T[1].P[j].name;
+
+		}
+	}
+	YP.insert(YP.begin(), yp1);
+
+	for(int j = 0; j < T[1].n; j++){
+		if(T[1].P[j].age <= ya && T[1].P[j].name != yp1){
+			ya = T[1].P[j].age;
+			yp2 = T[1].P[j].name;
+
+		}
+	}
+	YP.insert(YP.begin(), yp2);
 
 }
 
