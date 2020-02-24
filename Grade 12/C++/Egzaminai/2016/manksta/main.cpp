@@ -36,10 +36,24 @@ int main(){
 }
 
 bool _check(m a, m b){
-    return a.kiek > b.kiek;
+    //Funkcija patikrinanti kuris skaicius didesnis (reikalinga rikiavimo funkcijai)
+    if(a.kiek > b.kiek){
+        return true;
+    }
+
+    if(a.kiek == b.kiek){
+        if(a.pav[0] < b.pav[0]){
+            return true;
+        }
+    }
+
+    return false;
+
 }
 
 string _repair(string a){
+
+    //String tipo kintamajam grazina 20-ties char dydi (taip kaip yra reikalaujama)
 
     while(a.size() <= 20){
         a.insert(a.end(), ' ');
@@ -59,12 +73,15 @@ void Duomenys(vector<m> &Mankstos){
     for(int i = 0; i < n; i++){
         fd>>p>>b;
         Mankstos.push_back({p, b});
+        //Nuskaityti duomenys irasomi i strukturini vektoriu
     }
 
     fd.close();
 }
 
 bool arYra(string a, vector<m> &S){
+
+    //funkcija patikrinanti ar pratimas jau yra galutiniame masyve
     for(auto s : S){
         if(s.pav == a)
             return true;
@@ -75,18 +92,24 @@ bool arYra(string a, vector<m> &S){
 
 void Atrinkimas(vector<m> &Mankstos, vector<m> &S) {
 
+    //Funkcija atrenkanti pratimus, kad jie nesikartotu galutiniame masyve
+
     string a;
 
     for(int i = 0; i < Mankstos.size(); i++){
         a = Mankstos[i].pav;
         if(!arYra(a, S)){
             S.push_back({a, 0});
+            //Suformuojamas struct vektorius, kuriame bus skaiciuojami visi pratimai
         }
         a.clear();
     }
 }
 
 void Pratimai(vector<m> &Mankstos, vector<m> &S){
+
+    //Funkcija skaiciuojanti kiek kartu atlikti tam tikri pratimai
+
     for(int i = 0; i < S.size(); i++){
         int kiek = 0;
         for(int j = 0; j < Mankstos.size(); j++){
@@ -97,12 +120,15 @@ void Pratimai(vector<m> &Mankstos, vector<m> &S){
         S[i].kiek = kiek;
     }
 
+    //Vektoriaus rykiavimas pagal pratimu skaiciu
     sort(S.begin(), S.end(), _check);
 }
 
 void Isvedimas(vector<m> &S){
 
     ofstream fr(FR);
+
+    //Duomenu isvedimas i tekstini faila
 
     for(int i = 0; i < S.size(); i++){
         string rpav = _repair(S[i].pav);
