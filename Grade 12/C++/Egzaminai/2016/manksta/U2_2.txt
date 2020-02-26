@@ -1,0 +1,6 @@
+5
+prisitraukimai       10
+atsispaudimai        15
+atsilenkimai         12
+ðokinëjimas per këdæ 25
+ðokimas per kliûtis  100

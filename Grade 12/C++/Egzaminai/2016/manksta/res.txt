@@ -1,3 +1,5 @@
-atsilenkimai         47
-prisitraukimai       26
-atsispaudimai        19
+ğokimas per kliûtis   100
+atsilenkimai          47
+prisitraukimai        26
+ğokinëjimas per këdæ  25
+atsispaudimai         19

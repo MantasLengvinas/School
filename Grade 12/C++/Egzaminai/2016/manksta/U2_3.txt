@@ -1,0 +1,4 @@
+3
+prisitraukimai       10
+prisitraukimai        4
+prisitraukimai       12

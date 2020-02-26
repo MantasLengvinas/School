@@ -8,13 +8,15 @@
 
 using namespace std;
 
-const char FD[] = "data.txt";
+const char FD[] = "U2_1.txt";
 const char FR[] = "res.txt";
 
 struct m{
     string pav;
     int kiek;
 };
+
+const int CPav = 21;
 
 void Duomenys(vector<m> &Mankstos);
 void Atrinkimas(vector<m> &Mankstos, vector<m> &S);
@@ -51,28 +53,19 @@ bool _check(m a, m b){
 
 }
 
-string _repair(string a){
-
-    //String tipo kintamajam grazina 20-ties char dydi (taip kaip yra reikalaujama)
-
-    while(a.size() <= 20){
-        a.insert(a.end(), ' ');
-    }
-
-    return a;
-}
-
 void Duomenys(vector<m> &Mankstos){
     ifstream fd(FD);
     string p;
-    char a;
+    char a[CPav + 1];
     int n, b;
 
     fd>>n;
-
+    fd.ignore(80, '\n');
     for(int i = 0; i < n; i++){
-        fd>>p>>b;
-        Mankstos.push_back({p, b});
+        fd.get(a, CPav);
+        fd>>b;
+        Mankstos.push_back({a, b});
+        fd.ignore(80, '\n');
         //Nuskaityti duomenys irasomi i strukturini vektoriu
     }
 
