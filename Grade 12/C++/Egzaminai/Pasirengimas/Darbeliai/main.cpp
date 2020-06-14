@@ -10,7 +10,7 @@ const char FD[] = "data.txt";
 const char FR[] = "res.txt";
 
 struct _m {
-	string name;
+	char name[16];
 	vector<int> S;
 };
 
@@ -37,21 +37,21 @@ void getData(int &n, int &k, vector<_m> &M){
 	fd >> n >> k;
 	int s;
 	char a;
-	string name;
+	char name[16];
 	vector<int> S;
 
+	fd.ignore(80, '\n');
+
 	for(int i = 0; i < n; i++){
-        for(int i = 0; i < 15; i++){
-            fd.get(a);
-            name += a;
-        }
+
+        fd.get(name, 15);
+
 		for(int j = 0; j < k; j++){
 			fd >> s;
 			S.push_back(s);
 		}
 		M.push_back({name, S});
         S.clear();
-        name.clear();
 	}
 
 	fd.close();
